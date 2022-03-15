@@ -1,0 +1,82 @@
+
+    .maincontainer
+    {
+        width: 260px;
+        height: 326px;
+    }
+    
+    .maincontainer > .front
+    {
+        position: absolute;
+        transform: perspective(600px) rotateY(0deg);
+        width: 200px;
+        height: 250px;
+        backface-visibility: hidden; 
+        transition: transform .5s linear 0s;
+    } 
+    
+    .maincontainer > .back
+    {
+        position: absolute;
+        transform:  rotateY(90deg);
+        margin-top: 14.5rem;
+        height: 50px;
+        backface-visibility: hidden;
+        transition:  .4s linear 0s;
+    }
+    
+    .maincontainer:hover > .back
+    {
+        transform: perspective(600px) rotateY(0deg);
+    }
+
+    /* form style */
+    .myForm1 {
+        background-image: url(../pic/formbg.jpg); 
+        height: 450px; 
+        text-align: center;
+    }
+
+    .taskSubject1 {
+        width: 300px;
+    }
+
+    .taskText1 {
+        width: 300px; 
+        height: 130px;
+        resize:none;
+    }
+
+    .taskHourAndDate1 {
+        font-size: larger; 
+        width: 300px; 
+        height: 30px;
+    }
+
+    .firstTitle {
+        text-align: center; 
+        font-family: cursive; 
+        font-size: 250%; 
+        font-weight: 900;
+    }
+
+
+    
+
+    .mydivouter {
+        position: relative;
+        width: 200px;
+        height: 120px;
+        margin: 0 auto;
+    }
+
+    .mybuttonoverlap {
+        position: absolute;
+        top: 44px;
+        display: none;
+        left: 59px;
+    }
+
+    .mydivouter:hover .mybuttonoverlap {
+        display: block;
+    }

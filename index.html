@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Big Tasks</title>
+    <link href="./css/newcss.css" type="text/css" rel="stylesheet">
+    <link href="./css/animate.css" type="text/css" rel="stylesheet">
+    <link href="./css/bootstrap.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="./js/bootstrap.js"></script>
+    <script src="./js/popper.js"></script>
+    <script src="./js/myjs.js"></script>
+</head>
+
+<body style="background-image:url(./pic/tile.jpg)"><br>
+    <h1 class="animate__animated animate__rubberBand firstTitle">My Task Board</h1><br>
+    <div id="myForm" style="background-image:url(./pic/formbg.jpg);" class="myForm1"><br>
+        <label>Subject:</label><br>
+        <input id="taskSubject" class="taskSubject1" maxlength="40"><br>
+        <div style="height: 12px;"></div>
+        <label>Free text:</label><br>
+        <textarea id="taskText" type="text" class="taskText1"></textarea><br>
+        <div style="height: 5px;"></div>
+        <label style="height: 24px;">Date complete:</label><br>
+        <input id="taskDate" type="date" min="taskDate.value" class="taskHourAndDate1"><br>
+        <div style="height: 11px;"></div>
+        <label style="height: 25px;">Hour Complete:</label><br>
+        <input id="taskHour" type="time" class="taskHourAndDate1"><br>
+        <div style="height: 36px;"></div>
+        <div style="text-align: center;">
+            <button onclick="saveTask()">Save task</button>
+            <button type="reset" onclick="resetForm()">Reset form</button>
+        </div>
+    </div>
+    <br>
+    <div id="display" class="row row-cols-3 row-cols-md-5 g-5"></div>
+
+    <script>
+        taskDate.min = new Date().toLocaleDateString('en-ca')
+    </script>
+
+    <script>
+        let display = document.getElementById("display")
+        let taskSubject = document.getElementById("taskSubject")
+        let taskText = document.getElementById("taskText")
+        let taskDate = document.getElementById("taskDate")
+        let taskHour = document.getElementById("taskHour")
+        let tasks = []
+
+        function resetForm() {
+            taskSubject.value = null
+            taskText.value = null
+            taskDate.value = null
+            taskHour.value = null
+        }
+
+        function myValidation() {
+            if (taskSubject.value == "" || taskText.value == "" || taskDate.value == "")
+                return false
+            return true
+        }
+
+        function buildDisplay() {
+            display.innerHTML = ""
+            tasks.forEach((item, i) => {
+                // let myDate = item.taskDate;
+                // alert("check1: " + myDate);
+                // let day = item.taskDate.getDate();
+                // console.log(day);
+                // let month = item.taskDate.getMonth() + 1;
+                // console.log(month);
+                // let year = item.taskDate.getFullYear();
+                // console.log(year);
+                display.innerHTML += `
+                <div class="maincontainer animate__animated animate__fadeInUpBig">
+                  <div class="back">
+                <br><br><br><br>
+                <button type="button" class="btn btn-outline-danger" onclick="deleteFromLocalStorage(${i})" style="margin-left: 4px;">
+                    <svg width="200" height="30" fill="currentColor" class="bi bi-file-excel-fill" viewBox="0 0 16 16">
+                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5.884 4.68 8 7.219l2.116-2.54a.5.5 0 1 1 .768.641L8.651 8l2.233 2.68a.5.5 0 0 1-.768.64L8 8.781l-2.116 2.54a.5.5 0 0 1-.768-.641L7.349 8 5.116 5.32a.5.5 0 1 1 .768-.64z"></path>
+                    </svg>
+                </button> 
+                </div>
+                <div class="front">
+                <div class="col">
+                <div class="card" style="background-image:url(./pic/notebg.png); height: 326px; width: 260px;">
+                    <div class="card-body">
+                        <div style="height: 33px;"></div><h5 style="font-weight: bolder; width:220px;" class="card-title">${item.taskSubject}</h5>
+                            <textarea class="card-text" disabled="disabled" style="width: 225px; height: 170px;background: transparent; border:none;resize:none;">${item.taskText}</textarea>
+                            <small class="text-muted">${item.taskDate}<br>${item.taskHour}</small>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <br><br>
+            `
+            })
+        }
+
+        function clearFields() {
+            taskSubject.value = ""
+            taskText.value = ""
+            taskDate.value = ""
+            taskHour.value = ""
+        }
+
+        function saveToLocaleStorage() {
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+
+        function loadFromLocaleStorage() {
+            tasks = JSON.parse(localStorage.getItem('tasks'))
+            if (!tasks) {
+                tasks = []
+            }
+            buildDisplay()
+        }
+
+        function deleteFromLocalStorage(i) {
+            if (confirm("are you sure?")) {
+                tasks.splice(i, 1)
+                saveToLocaleStorage()
+                buildDisplay()
+            }
+            else {
+                buildDisplay()
+            }
+        }
+
+        function saveTask() {
+            if (!myValidation()) {
+                console.log("invalid")
+                alert("you miss some box-text")
+            }
+            else {
+                console.log("valid")
+                let myTasks = { taskSubject: taskSubject.value, taskText: taskText.value, taskDate: taskDate.value, taskHour: taskHour.value }
+                tasks.push(myTasks)
+                console.log(tasks)
+                clearFields()
+                saveToLocaleStorage()
+                buildDisplay()
+            }
+        }
+        loadFromLocaleStorage()
+    </script>
+
+    <br><br><br><br>
+</body>
+
+</html>
